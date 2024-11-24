@@ -50,6 +50,7 @@ class Login extends StatelessWidget {
               data.password,
             );
             final user = result.record;
+            auth$.value = user;
             if (user == null) {
               return 'User not found';
             }
@@ -63,13 +64,14 @@ class Login extends StatelessWidget {
         },
         onSignup: (data) async {
           try {
-            await auth.create(body: {
+            final user = await auth.create(body: {
               'name': data.additionalSignupData?['name'],
               'email': data.name,
               'password': data.password,
               'passwordConfirm': data.password,
               'emailVisibility': true,
             });
+            auth$.value = user;
           } catch (e) {
             if (e is ClientException) {
               return e.response['message'] ?? 'Error logging in: $e';

@@ -9,8 +9,9 @@ final auth$ = Signal<RecordModel?>(null);
 Future<PocketBase> createPocketBase() async {
   final prefs = await SharedPreferences.getInstance();
   const authKey = 'auth';
+  final token = prefs.getString(authKey);
   final store = AsyncAuthStore(
-    initial: prefs.getString(authKey),
+    initial: token,
     save: (token) async {
       await prefs.setString(authKey, token);
     },
@@ -26,11 +27,16 @@ Future<PocketBase> createPocketBase() async {
       auth$.value = null;
     }
   });
-  return PocketBase(
+  final pb = PocketBase(
     'http://127.0.0.1:8090',
     httpClientFactory: createHttpClient,
     authStore: store,
   );
+  if (token != null) {
+    // Try to refresh auth
+    pb.collection('user').authRefresh().ignore();
+  }
+  return pb;
 }
 
 final pocketbase$ = Signal<PocketBase>.lazy();
