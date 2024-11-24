@@ -34,7 +34,7 @@ Future<PocketBase> createPocketBase() async {
   );
   if (token != null) {
     // Try to refresh auth
-    pb.collection('user').authRefresh().ignore();
+    pb.collection('users').authRefresh().ignore();
   }
   return pb;
 }
