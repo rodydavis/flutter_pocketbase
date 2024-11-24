@@ -12,9 +12,9 @@ import (
 func main() {
 	app := pocketbase.New()
 
-	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS("./build/web"), false))
-		return nil
+	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
+		se.Router.GET("/{path...}", apis.Static(os.DirFS("./build/web"), false))
+		return se.Next()
 	})
 
 	if err := app.Start(); err != nil {
