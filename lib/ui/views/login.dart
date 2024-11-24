@@ -45,8 +45,10 @@ class Login extends StatelessWidget {
         userType: LoginUserType.email,
         onLogin: (data) async {
           try {
-            final result =
-                await auth.authWithPassword(data.name, data.password);
+            final result = await auth.authWithPassword(
+              data.name,
+              data.password,
+            );
             final user = result.record;
             if (user == null) {
               return 'User not found';
@@ -65,6 +67,7 @@ class Login extends StatelessWidget {
               'name': data.additionalSignupData?['name'],
               'email': data.name,
               'password': data.password,
+              'passwordConfirm': data.password,
               'emailVisibility': true,
             });
           } catch (e) {
