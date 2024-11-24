@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/auth_guard.dart';
 import 'home.dart';
 
 class App extends StatelessWidget {
@@ -12,7 +13,11 @@ class App extends StatelessWidget {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.system,
-      home: const Home(),
+      home: AuthGuard(
+        builder: (context) {
+          return const Home();
+        },
+      ),
     );
   }
 }

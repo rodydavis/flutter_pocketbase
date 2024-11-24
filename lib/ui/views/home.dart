@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/auth_guard.dart';
-
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -12,14 +10,10 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return AuthGuard(
-      builder: (context) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Home'),
-          ),
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home'),
+      ),
     );
   }
 }
