@@ -11,10 +11,12 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_login: ^5.0.0
+  flutter_widget_from_html: ^0.15.3
   http: ^1.2.2
   pocketbase: ^0.18.1
   shared_preferences: ^2.3.3
   signals: ^5.5.0
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:

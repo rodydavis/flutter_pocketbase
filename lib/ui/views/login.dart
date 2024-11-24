@@ -18,13 +18,14 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     final pb = pocketbase$();
     final auth = pb.collection(authCollection);
+    final colors = Theme.of(context).colorScheme;
     return Scaffold(
       body: FlutterLogin(
         title: title,
         theme: LoginTheme(
-          pageColorLight: Theme.of(context).colorScheme.surface,
-          accentColor: Theme.of(context).colorScheme.primary,
-          errorColor: Theme.of(context).colorScheme.error,
+          pageColorLight: colors.surface,
+          accentColor: colors.primary,
+          errorColor: colors.error,
           buttonStyle: TextStyle(
             color: Theme.of(context).colorScheme.onPrimary,
           ),
@@ -45,9 +46,12 @@ class Login extends StatelessWidget {
         userType: LoginUserType.email,
         onLogin: (data) async {
           try {
-            final result =
-                await auth.authWithPassword(data.name, data.password);
+            final result = await auth.authWithPassword(
+              data.name,
+              data.password,
+            );
             final user = result.record;
+            auth$.value = user;
             if (user == null) {
               return 'User not found';
             }
@@ -61,12 +65,14 @@ class Login extends StatelessWidget {
         },
         onSignup: (data) async {
           try {
-            await auth.create(body: {
+            final user = await auth.create(body: {
               'name': data.additionalSignupData?['name'],
               'email': data.name,
               'password': data.password,
+              'passwordConfirm': data.password,
               'emailVisibility': true,
             });
+            auth$.value = user;
           } catch (e) {
             if (e is ClientException) {
               return e.response['message'] ?? 'Error logging in: $e';

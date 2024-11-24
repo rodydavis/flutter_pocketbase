@@ -26,6 +26,12 @@ Future<PocketBase> createPocketBase() async {
       auth$.value = null;
     }
   });
+  final model = store.model;
+  if (model is RecordModel) {
+    auth$.value = model;
+  } else {
+    auth$.value = null;
+  }
   return PocketBase(
     'http://127.0.0.1:8090',
     httpClientFactory: createHttpClient,
