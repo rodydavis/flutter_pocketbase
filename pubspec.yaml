@@ -1,0 +1,28 @@
+name: flutter_pocketbase
+description: "A new Flutter project."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.3.0
+
+dependencies:
+  fetch_client: ^1.1.2
+  flutter:
+    sdk: flutter
+  flutter_login: ^5.0.0
+  http: ^1.2.2
+  pocketbase: ^0.18.1
+  shared_preferences: ^2.3.3
+  signals: ^5.5.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+scripts:
+  build: flutter build web && go build -o server.bin
