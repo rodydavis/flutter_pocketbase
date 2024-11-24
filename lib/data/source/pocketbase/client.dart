@@ -19,13 +19,17 @@ Future<PocketBase> createPocketBase() async {
       await prefs.remove(authKey);
     },
   );
-  store.onChange.listen((event) {
-    final model = event.model;
+  void update(dynamic model) {
     if (model is RecordModel) {
       auth$.value = model;
     } else {
       auth$.value = null;
     }
+  }
+
+  store.onChange.listen((event) {
+    final model = event.model;
+    update(model);
   });
   final pb = PocketBase(
     'http://127.0.0.1:8090',
@@ -36,6 +40,8 @@ Future<PocketBase> createPocketBase() async {
     // Try to refresh auth
     pb.collection('users').authRefresh().ignore();
   }
+  final model = store.model;
+  update(model);
   return pb;
 }
 
