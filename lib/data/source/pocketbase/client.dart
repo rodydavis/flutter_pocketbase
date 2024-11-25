@@ -5,6 +5,7 @@ import 'package:signals/signals.dart';
 import '../http_client/client.dart';
 
 final auth$ = Signal<RecordModel?>(null);
+final pocketbase$ = Signal<PocketBase>.lazy();
 
 Future<PocketBase> createPocketBase() async {
   final prefs = await SharedPreferences.getInstance();
@@ -38,5 +39,3 @@ Future<PocketBase> createPocketBase() async {
     authStore: store,
   );
 }
-
-final pocketbase$ = Signal<PocketBase>.lazy();
