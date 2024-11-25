@@ -17,7 +17,7 @@ class App extends StatelessWidget {
       builder: (context) {
         return const Home();
       },
-    ),
+     ),
     );
   }
 }
