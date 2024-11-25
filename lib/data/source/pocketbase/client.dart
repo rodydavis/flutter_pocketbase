@@ -30,7 +30,7 @@ Future<PocketBase> createPocketBase() async {
   }
 
   store.onChange.listen((event) {
-    final model = event.model;
+    final model = event.record;
     update(model);
   });
  
@@ -45,7 +45,7 @@ Future<PocketBase> createPocketBase() async {
     pb.collection('users').authRefresh().ignore();
   }
   
-  final model = store.model;
+  final model = store.record;
   update(model);
   return pb;
 }

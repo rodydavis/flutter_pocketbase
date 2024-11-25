@@ -52,9 +52,6 @@ class Login extends StatelessWidget {
             );
             final user = result.record;
             auth$.value = user;
-            if (user == null) {
-              return 'User not found';
-            }
           } catch (e) {
             if (e is ClientException) {
               return e.response['message'] ?? 'Error logging in: $e';
