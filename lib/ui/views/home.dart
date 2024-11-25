@@ -50,7 +50,7 @@ class _HomeState extends State<Home> with SignalsMixin {
               children: [
                 const Events(),
                 WishList(user: auth$()!),
-                const Profile(),
+                Profile(user: auth$()!),
               ],
             ),
           ),

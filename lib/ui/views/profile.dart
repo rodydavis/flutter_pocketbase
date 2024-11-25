@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:signals/signals_flutter.dart';
 
-import '../../data/source/pocketbase/client.dart';
-//import '../widgets/actions.dart';
-import '../widgets/records_mixin.dart';
+import '../widgets/actions.dart';
+import '../widgets/record_mixin.dart';
 
 class Profile extends StatefulWidget {
   const Profile({
@@ -19,8 +18,12 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile>
-    with SignalsMixin<Profile>, RecordsMixin<Profile> {
-  // ... (other code)
+    with SignalsMixin<Profile>, RecordMixin<Profile> {
+  @override
+  String get id => widget.user.id;
+
+  @override
+  String get collection => 'users';
 
   @override
   Widget build(BuildContext context) {
@@ -28,29 +31,39 @@ class _ProfileState extends State<Profile>
       appBar: AppBar(
         title: const Text('Profile'),
       ),
-      body: StreamBuilder<List<RecordModel>>(
-        stream: records, // Use the records signal
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
-          if (snapshot.hasData) {
-            final profile = snapshot.data!.first as Profile; // Cast to your model
-            return ListView(
-              children: [
-                // Display profile information
-                ListTile(
-                  title: Text(record.getStringValue('name')),
-                ),
-                ListTile(
-                  title: Text(profile.getStringValue('email')),
-                ),
-              ],
-            );
-          }
+      body: () {
+        if (loading.value) {
           return const Center(child: CircularProgressIndicator());
-        },
-      ),
+        }
+        final profile = record.value ?? widget.user;
+        final name = profile.getStringValue('name');
+        return ListView(
+          children: [
+            // Display profile information
+            ListTile(
+              title: Text(name),
+              trailing: IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () async {
+                  final result = await prompt(
+                    context,
+                    title: 'Name',
+                    value: name,
+                  );
+                  if (result == null) return;
+                  await col.update(profile.id, body: {
+                    'name': result,
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              title: Text(profile.getStringValue('email')),
+              // Do not allow changing email, gets complicated
+            ),
+          ],
+        );
+      }(),
     );
   }
 }
