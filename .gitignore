@@ -47,3 +47,5 @@ app.*.map.json
 # PocketBase
 /pb_data/
 /pb_migrations/
+
+.env
